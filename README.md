@@ -12,3 +12,5 @@ Become interview-ready for FAANG by December 2026.
 <!-- LATEST_LOG_START -->
 No logs yet
 <!-- LATEST_LOG_END -->
+
+## 🔥 Current Streak: 1

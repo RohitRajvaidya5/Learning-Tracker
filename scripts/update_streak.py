@@ -1,30 +1,55 @@
 import os
+import re
 from datetime import datetime
 
-LOG_DIR = "logs\\2026"
+# ====== CONFIG ======
+LOG_DIR = os.path.join("logs", "2026")
+README_PATH = "README.md"
 
+# ====== GET TODAY FILE ======
 today = datetime.now().strftime("%m-%d")
-print(today)
 log_file = os.path.join(LOG_DIR, f"{today}.md")
-print(log_file)
 
-streak = 0
+# Ensure log directory exists
+os.makedirs(LOG_DIR, exist_ok=True)
 
-if os.path.exists(log_file):
-    streak = streak + 1  # basic example
+# Create today's log file if not exists
+if not os.path.exists(log_file):
+    with open(log_file, "w") as f:
+        f.write(f"# Log for {today}\n\n")
 
-readme_path = "README.md"
-
-with open(readme_path, "r") as f:
+# ====== READ README ======
+with open(README_PATH, "r", encoding="utf-8") as f:
     content = f.read()
-    
 
-new_content = content.replace(
-    "0 days",
-    f"{streak} days"
-)
+# ====== EXTRACT CURRENT STREAK ======
+match = re.search(r"Current Streak:\s*(\d+)", content)
 
-print(new_content)
+if match:
+    current_streak = int(match.group(1))
+else:
+    current_streak = 0
 
-with open(readme_path, "w") as f:
+# ====== UPDATE STREAK ======
+# If today's log exists → increase streak
+if os.path.exists(log_file):
+    new_streak = current_streak + 1
+else:
+    new_streak = current_streak
+
+# Replace only the streak number
+if match:
+    new_content = re.sub(
+        r"(Current Streak:\s*)\d+",
+        rf"\g<1>{new_streak}",
+        content
+    )
+else:
+    # If line not found, add it
+    new_content = content + f"\n\n## 🔥 Current Streak: {new_streak}\n"
+
+# ====== WRITE BACK ======
+with open(README_PATH, "w", encoding="utf-8") as f:
     f.write(new_content)
+
+print(f"Updated streak to: {new_streak}")
