@@ -1,16 +1,14 @@
 # Learning Tracker
+---
 
-### 🎯 Target
-Become interview-ready for FAANG by December 2026.
+## Last Logs
+---
+New uPDATE NEW LOG
 
-### 🔥 Current Streak
-<!-- STREAK_START -->
-0 days
-<!-- STREAK_END -->
+## Current Streak
+---
+0
 
-### 📅 Latest Log
-<!-- LATEST_LOG_START -->
-No logs yet
-<!-- LATEST_LOG_END -->
-
-## 🔥 Current Streak: 1
+## Total Streak
+---
+0

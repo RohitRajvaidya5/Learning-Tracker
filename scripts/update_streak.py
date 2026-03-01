@@ -1,55 +1,76 @@
 import os
 import re
-from datetime import datetime
 
-# ====== CONFIG ======
-LOG_DIR = os.path.join("logs", "2026")
-README_PATH = "README.md"
+# -----------------------------
+# Paths
+# -----------------------------
+base_dir = os.getcwd()
+log_dir = os.path.join(base_dir, "logs", "2026")
+readme_path = os.path.join(base_dir, "README.md")
 
-# ====== GET TODAY FILE ======
-today = datetime.now().strftime("%m-%d")
-log_file = os.path.join(LOG_DIR, f"{today}.md")
+# -----------------------------
+# Get latest log file
+# -----------------------------
+latest_log = max(
+    os.listdir(log_dir),
+    key=lambda x: os.path.getmtime(os.path.join(log_dir, x))
+)
 
-# Ensure log directory exists
-os.makedirs(LOG_DIR, exist_ok=True)
+with open(os.path.join(log_dir, latest_log), "r", encoding="utf-8") as f:
+    content = f.read().strip()
 
-# Create today's log file if not exists
-if not os.path.exists(log_file):
-    with open(log_file, "w") as f:
-        f.write(f"# Log for {today}\n\n")
+# -----------------------------
+# Read README
+# -----------------------------
+with open(readme_path, "r", encoding="utf-8") as f:
+    readme = f.read()
 
-# ====== READ README ======
-with open(README_PATH, "r", encoding="utf-8") as f:
-    content = f.read()
+# -----------------------------
+# Update Last Logs Section
+# -----------------------------
+last_logs_pattern = r"(## Last Logs\s*\n---\s*\n)(.*?)(?=\n## |\Z)"
 
-# ====== EXTRACT CURRENT STREAK ======
-match = re.search(r"Current Streak:\s*(\d+)", content)
+readme = re.sub(
+    last_logs_pattern,
+    lambda m: m.group(1) + content + "\n",
+    readme,
+    flags=re.DOTALL
+)
 
-if match:
-    current_streak = int(match.group(1))
-else:
-    current_streak = 0
+# -----------------------------
+# Update Current Streak
+# -----------------------------
+current_pattern = r"(## Current Streak\s*\n---\s*\n)(\d+)"
 
-# ====== UPDATE STREAK ======
-# If today's log exists → increase streak
-if os.path.exists(log_file):
-    new_streak = current_streak + 1
-else:
-    new_streak = current_streak
+match = re.search(current_pattern, readme)
+current_streak = int(match.group(2)) if match else 0
+new_current = current_streak + 1
 
-# Replace only the streak number
-if match:
-    new_content = re.sub(
-        r"(Current Streak:\s*)\d+",
-        rf"\g<1>{new_streak}",
-        content
-    )
-else:
-    # If line not found, add it
-    new_content = content + f"\n\n## 🔥 Current Streak: {new_streak}\n"
+readme = re.sub(
+    current_pattern,
+    lambda m: m.group(1) + str(new_current),
+    readme
+)
 
-# ====== WRITE BACK ======
-with open(README_PATH, "w", encoding="utf-8") as f:
-    f.write(new_content)
+# -----------------------------
+# Update Total Streak
+# -----------------------------
+total_pattern = r"(## Total Streak\s*\n---\s*\n)(\d+)"
 
-print(f"Updated streak to: {new_streak}")
+match = re.search(total_pattern, readme)
+total_streak = int(match.group(2)) if match else 0
+new_total = total_streak + 1
+
+readme = re.sub(
+    total_pattern,
+    lambda m: m.group(1) + str(new_total),
+    readme
+)
+
+# -----------------------------
+# Write back
+# -----------------------------
+with open(readme_path, "w", encoding="utf-8") as f:
+    f.write(readme)
+
+print("README updated successfully.")
