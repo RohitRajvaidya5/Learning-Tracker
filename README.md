@@ -1,17 +1,22 @@
-# Learning Tracker
+
+# 🚀 Learning Tracker
+> Consistency builds mastery. This repo chronicles my daily journey of learning, growth, and curiosity.
+
 ---
 
-## Last Logs
+## 📅 Today's Progress
+**Date:** 2026-03-02
+
+### 🧠 Topics Studied
+-
+
+### 📚 Resources Used
+-
+
+### 💡 Insights / Challenges
+-
+
 ---
-2026-03-01 18:48:04
 
-## Current Streak
----
-2
-
-### 📅 Latest Log
-<!-- LATEST_LOG_START -->
-No logs yet
-<!-- LATEST_LOG_END -->
-
-## 🔥 Current Streak: 2
+## 🔥 Learning Streak
+### Current Streak: 1 Days
