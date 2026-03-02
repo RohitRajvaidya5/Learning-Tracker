@@ -7,7 +7,7 @@
 
 ## Current Streak
 ---
-1
+2
 
 ### 📅 Latest Log
 <!-- LATEST_LOG_START -->
